@@ -1,0 +1,19 @@
+[package]
+name = "Interact"
+version = "0.1.0"
+edition = "2021"
+authors = ["Andy Dixon <andy@andydixon.com>"]
+license = "GPL-3"
+
+[lib]
+crate-type= ["dylib"]
+bench= false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+reqwest = { version = "0.11", features = ["blocking"]}
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = "0.4"
+custom_error = "1.9.2"
