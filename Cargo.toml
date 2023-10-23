@@ -6,6 +6,8 @@ authors = ["Andy Dixon <andy@andydixon.com>"]
 license = "GPL-3"
 readme = "README.md"
 homepage = "https://github.com/andydixon/interact.rs"
+repository= "https://github.com/andydixon/interact.rs"
+description = "Unofficial Rust crate for Webex Interact"
 
 [lib]
 crate-type= ["dylib"]
