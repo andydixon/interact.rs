@@ -1,9 +1,11 @@
 [package]
-name = "Interact"
+name = "interact-rs"
 version = "0.1.0"
 edition = "2021"
 authors = ["Andy Dixon <andy@andydixon.com>"]
 license = "GPL-3"
+readme = "README.md"
+homepage = "https://github.com/andydixon/interact.rs"
 
 [lib]
 crate-type= ["dylib"]
