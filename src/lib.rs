@@ -43,7 +43,7 @@ pub mod sms {
     impl InteractError {
         pub fn get_data(&self) -> Option<String> {
             match self {
-                InteractError::Error { message,data } => {return data.clone();},
+                InteractError::Error { message:_,data } => {return data.clone();},
             }
         }
     }
@@ -53,7 +53,7 @@ pub mod sms {
     impl std::fmt::Display for InteractError {
         fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
             match self {
-                InteractError::Error { message,data } => write!(f, "{}.", message),
+                InteractError::Error { message,data:_ } => write!(f, "{}.", message),
             }
         }
     }
