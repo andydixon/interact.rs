@@ -1,10 +1,11 @@
 # interact.rs
+
 ### An unofficial Rust crate for the Webex Interact API
 
 **Example Usage**
 
 ```rust
-use Interact::sms;
+use interact_rs::sms;
 
 fn main() {
     let mut sms = sms::sms_api("zzz_XXXXXXXXXXXXXXXXXXXXXXXXXX".to_string());

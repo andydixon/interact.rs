@@ -1,6 +1,6 @@
 [package]
 name = "interact-rs"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Andy Dixon <andy@andydixon.com>"]
 license = "GPL-3.0-only"
