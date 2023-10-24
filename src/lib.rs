@@ -1,13 +1,18 @@
+/// SMS handling through Interact
 pub mod sms {
     use chrono::prelude::{DateTime, Utc};
     use chrono::Duration;
     use serde::Serialize;
 
+    /// Phonenumber is an array of MSISDNs (mobile telephone numbers) required as part of
+    /// The JSON payload for the API. This may be extended in the future if each number has
+    /// the ability to have meta information with it
     #[derive(Serialize)]
     pub struct Phonenumber {
         phone: Vec<String>,
     }
 
+    /// Payload struct which is serialised into JSON and passed to the Interact API endpoint
     #[derive(Serialize)]
     struct Payload {
         message_body: String,
@@ -30,11 +35,18 @@ pub mod sms {
         valid_until: Option<DateTime<Utc>>,
     }
 
+    /// Interact Response object containing the HTTP status code, and the body returned back
+    /// by the API - normally a JSON object that would need deserialising. This will be refined
+    /// in the future to provide an InteractAPIResponse object which will have the deserialised
+    /// data, removing the need to manually do it elsewhere
     pub struct InteractResponse {
         pub status: u16,
         pub response_body: String,
     }
 
+    /// Error object which provides additional information where possible - message contains a
+    /// human readable error message, and the Option<String> can provide the JSON response back
+    /// from the Interact API
     #[derive(Debug)]
     pub enum InteractError {
         Error { message: String,data: Option <String> },
@@ -60,31 +72,40 @@ pub mod sms {
 
 
     impl InteractSMS {
+
+        /// Add a single MSISDN recipient. This can be chained multiple times, eg:
+        /// foo.add_recipient("+447000000000".to_string()).add_recipient("+447000000001".to_string());
         pub fn add_recipient(mut self, recipient: String) -> InteractSMS {
             self.to.push(recipient.to_string());
             self
         }
 
+        /// Add the message to be sent to the Payload object
         pub fn message(mut self, message_body: String) -> InteractSMS {
             self.body = message_body;
             self
         }
 
+        /// Sets the originator (message sender name)
         pub fn set_originator(mut self, sender_name: String) -> InteractSMS {
             self.from = sender_name;
             self
         }
 
+        /// (optional) Specifies the timestamp of when the message should be discorded if it's not
+        /// delivered to the handset by this time - defaults to 72 hours (standard network time)
         pub fn expires(mut self, expiry_timestamp: DateTime<Utc>) -> InteractSMS {
             self.valid_until = Some(expiry_timestamp);
             self
         }
 
+        /// (Optional) Sets the schedule time for when the messages should be sent to the recipients
         pub fn send_at(mut self, send_timestamp: DateTime<Utc>) -> InteractSMS {
             self.schedule_time = Some(send_timestamp);
             self
         }
 
+        /// Function which sends the request to the API
         pub fn send_sms(&self) -> Result<InteractResponse, InteractError> {
             let schedule_time = match self.schedule_time {
                 Some(a) => a,
@@ -175,6 +196,7 @@ pub mod sms {
         }
     }
 
+    /// Instantiates the SMS API
     pub fn sms_api(api_key: String) -> InteractSMS {
         InteractSMS {
             api_endpoint: "https://api.webexinteract.com/v1/sms".to_string(),
